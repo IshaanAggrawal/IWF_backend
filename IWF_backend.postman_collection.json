@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "060d4b2e-0a5d-45db-b746-d8bbce132c3f",
+		"name": "IWF Backend API",
+		"description": "Postman collection for the IWF Backend including payment creation, verification, and file uploads.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Root Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Check if the server is running."
+			},
+			"response": []
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 100,\n    \"currency\": \"INR\",\n    \"receipt\": \"receipt_order_12345\",\n    \"notes\": {\n        \"purpose\": \"registration\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payment/create-order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment",
+								"create-order"
+							]
+						},
+						"description": "Create a new Razorpay order. Amount is specified in standard units (the backend will convert it to subunits e.g., paisa)."
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"razorpay_order_id\": \"order_OdA4HlqFfCpxnC\",\n    \"razorpay_payment_id\": \"pay_OdA4S8vWKcKxSv\",\n    \"razorpay_signature\": \"6c79a5c898c08fbce9d1e2e46808ad6bfb1de805c87de6471e9882200547ba56\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payment/verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payment",
+								"verify"
+							]
+						},
+						"description": "Verify the Razorpay payment signature generated on the frontend after a successful transaction."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Upload File (Cloudinary)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "Select the file you want to upload to Cloudinary",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						},
+						"description": "Upload any file (image, pdf, document etc) to Cloudinary via a Multipart FormData request."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
