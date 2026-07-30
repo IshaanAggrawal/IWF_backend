@@ -1,177 +1,59 @@
-# IWF Backend Service
+# IWF Backend — Frontend Integration
 
-An Express.js-based backend API service providing robust, scalable integrations for Razorpay payment processing and direct-to-cloud media uploads via Cloudinary.
+## Run locally
 
----
-
-## 🛠️ Technology Stack & Badges
-
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![Razorpay](https://img.shields.io/badge/Razorpay-02268A?style=for-the-badge&logo=razorpay&logoColor=white)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
-![Nodemon](https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white)
-
----
-
-## ✨ Features
-
-- **Razorpay Payment Integration**: Create secure payment orders, capture transactions, and verify payment signatures on the backend.
-- **In-Memory Cloudinary Uploads**: Bypasses local disk storage constraints by using Multer's `memoryStorage` and streaming file buffers directly to Cloudinary via `upload_stream`.
-- **Pre-configured Postman Collection**: Importable API request templates for instant local environment testing.
-- **Payment Simulator**: Local command-line tool to test Razorpay order generation and simulate successful payment verification signature generation.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** (v18.x or higher recommended)
-- **npm** (v9.x or higher)
-- A **Razorpay** Account (for Test API keys)
-- A **Cloudinary** Account (for cloud upload keys)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd IWF_backend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Set up the Environment Variables:
-   Create a `.env` file in the root directory based on the `.env.example` template:
-   ```bash
-   cp env.example .env
-   ```
-
-4. Configure your `.env` keys:
-   ```env
-   RAZORPAY_KEY_ID=your_razorpay_key_id
-   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-
-   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-   CLOUDINARY_API_KEY=your_cloudinary_api_key
-   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-   ```
-
----
-
-## 💻 Running the App
-
-### Development Mode (with Live Reload)
 ```bash
-npm run dev
-```
-The server will start by default on `http://localhost:3000`.
-
-### Production Mode
-```bash
-node app.js
-```
-
----
-
-## 📂 Project Structure
-
-```text
-├── src/
-│   ├── config/            # Third-party service configurations (Razorpay, etc.)
-│   ├── controllers/       # Route handlers and business logic
-│   ├── middlewares/       # Multer (In-memory storage definition)
-│   ├── routes/            # Express route groups (Payment, Upload)
-│   ├── utils/             # Cloudinary upload stream helper functions
-│   └── (jobs/sockets/...) # Extensible directories for jobs, sockets, models
-├── scripts/
-│   └── simulate-payment.js# Command-line utility to simulate Razorpay payment flow
-├── .env.example           # Shared environment configurations structure
-├── app.js                 # App entry point
-├── IWF_backend.postman_collection.json # Exported Postman tests
-└── package.json           # Scripts and dependencies
+cd backend
+docker compose up -d
+cp .env.example .env   # fill Razorpay test + Cloudinary when ready
+npm install
+npm run seed
+npm run dev            # http://localhost:5000
 ```
 
----
+## Postman
 
-## 🔌 API Reference
+1. Import [`postman/IWF_Backend_API.postman_collection.json`](postman/IWF_Backend_API.postman_collection.json)
+2. Import [`postman/IWF_Local.postman_environment.json`](postman/IWF_Local.postman_environment.json)
+3. Select **IWF Local** environment
+4. Run **Auth → Login** (saves `adminToken` automatically)
 
-### 💳 Payment Endpoints
-All payments are handled under `/api/payment` namespace.
+Default admin (from seed): `admin@iwf.org` / `admin123456`  
+Dev membership OTP: `1234`
 
-#### 1. Create Order
-- **Endpoint**: `POST /api/payment/create-order`
-- **Body Schema (`application/json`)**:
-  ```json
-  {
-    "amount": 500,       // Amount in standard currency (e.g. 500 INR)
-    "currency": "INR",   // Optional, default: "INR"
-    "receipt": "rec_01", // Optional
-    "notes": {}          // Optional metadata
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "success": true,
-    "order": {
-      "id": "order_OdBZ9uGZ5uGZ5u",
-      "entity": "order",
-      "amount": 50000,   // Converted to subunits automatically
-      "currency": "INR",
-      ...
-    }
-  }
-  ```
+## Cards — two separate systems
 
-#### 2. Verify Payment
-- **Endpoint**: `POST /api/payment/verify`
-- **Body Schema (`application/json`)**:
-  ```json
-  {
-    "razorpay_order_id": "order_OdBZ9uGZ5uGZ5u",
-    "razorpay_payment_id": "pay_OdBZa1Z5uGZ5uG",
-    "razorpay_signature": "signature_hash_here"
-  }
-  ```
+| System | Cards | Stored on | Thresholds / fees |
+|--------|-------|-----------|-------------------|
+| **Donor recognition** | Silver / Gold / Platinum | `DonationTransaction.donorCardTier` + `Donor.tier` | `GET /api/donations/tiers` or `/api/cms/donor-tiers` |
+| **Membership** | Blue / Yellow / Green | `MembershipApplication.category` + `categorySnapshot` + `Member` | `GET /api/cms/membership-categories` |
 
----
+### What a donation stores
+- Full form snapshot (`formSnapshot`): donor type, citizenship, name, email, phone, address, PAN, tax exemption, consent, financial type, amount, payment mode, patient slug
+- Payment details (`paymentDetails`): channel (upi/card/netbanking), UPI id, bank UTR, cheque fields
+- Razorpay ids when online
+- `donorCardTier` for **this gift** (e.g. ₹10,000 → Gold card)
+- On success: bumps `Donor.totalDonated` and lifetime `Donor.tier`
 
-### ☁️ File Upload Endpoint
-All uploads are handled under `/api/upload` namespace.
+### What a membership application stores
+- All form fields + chosen **Blue/Yellow/Green** card
+- `categorySnapshot` (code, fee, features, color at apply time)
+- Payment mode + payment details + Razorpay ids
+- Photo / ID proof URLs (Cloudinary or local)
 
-#### 1. Upload File to Cloudinary
-- **Endpoint**: `POST /api/upload`
-- **Body Schema (`multipart/form-data`)**:
-  - **Key**: `file` (Type: File)
-- **Response**:
-  ```json
-  {
-    "success": true,
-    "message": "File uploaded successfully",
-    "data": {
-      "url": "http://res.cloudinary.com/...",
-      "secure_url": "https://res.cloudinary.com/...",
-      "public_id": "folder/sample_name"
-    }
-  }
-  ```
+## Media (Cloudinary)
 
----
+Set in `.env`:
 
-## 🧪 Testing and Simulation
-
-### Postman
-You can import [IWF_backend.postman_collection.json](./IWF_backend.postman_collection.json) directly into Postman to quickly test all routes.
-
-### Local CLI Payment Simulation
-Test the Razorpay order creation and signature generation locally using:
-```bash
-node scripts/simulate-payment.js
 ```
-This script will verify that your Razorpay keys are loaded and create a test order, outputting the generated signature matching Razorpay's hashing algorithm.
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+CLOUDINARY_FOLDER=iwf
+```
+
+Without credentials, uploads go to `backend/uploads` and are served at `/uploads/...`.
+
+## Frontend
+
+API-only for now — no frontend wiring. Integrate later using Postman as the contract.

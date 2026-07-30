@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "gateway/**/*",
+    "services/**/*",
+    "shared/**/*",
+    "infrastructure/**/*"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

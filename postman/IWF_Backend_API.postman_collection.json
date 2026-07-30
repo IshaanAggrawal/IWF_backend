@@ -1,0 +1,598 @@
+{
+  "info": {
+    "_postman_id": "iwf-backend-cms-api",
+    "name": "IWF Backend API",
+    "description": "Islah Welfare Foundation gateway APIs for frontend integration.\n\nBase URL: `{{baseUrl}}` (default http://localhost:5000)\n\nAuth: Admin routes need Bearer `{{adminToken}}` from Auth → Login.\n\nPayments use Razorpay **test** mode. Uploads use Cloudinary when configured, else local `/uploads`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "adminToken", "value": "" },
+    { "key": "donationId", "value": "" },
+    { "key": "applicationId", "value": "" },
+    { "key": "memberId", "value": "IWF-BL-2025-001" },
+    { "key": "patientSlug", "value": "mohammed-salim" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.token) pm.collectionVariables.set('adminToken', data.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@iwf.org\",\n  \"password\": \"admin123456\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Donations",
+      "item": [
+        {
+          "name": "Create Donation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.donation && data.donation._id) pm.collectionVariables.set('donationId', data.donation._id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donorType\": \"individual\",\n  \"citizenship\": \"indian\",\n  \"fullName\": \"Test Donor\",\n  \"email\": \"donor@example.com\",\n  \"phone\": \"9876543210\",\n  \"address\": \"Bathiya, Darbhanga, Bihar\",\n  \"pan\": \"ABCDE1234F\",\n  \"taxExemption\": true,\n  \"consentDisplay\": true,\n  \"financialType\": \"Health Care\",\n  \"amount\": 10000,\n  \"paymentMode\": \"online\",\n  \"patientSlug\": \"{{patientSlug}}\",\n  \"paymentDetails\": {\n    \"channel\": \"upi\",\n    \"upiId\": \"donor@upi\",\n    \"notes\": \"Test donation via Postman\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/donations"
+          }
+        },
+        {
+          "name": "Donor Card Tiers (Silver/Gold/Platinum)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/donations/tiers"
+          }
+        },
+        {
+          "name": "List Donations (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/donations"
+          }
+        },
+        {
+          "name": "Update Payment Details",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bankReference\": \"UTR123456789\",\n  \"channel\": \"netbanking\",\n  \"notes\": \"NEFT received\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donations/{{donationId}}/payment-details"
+          }
+        },
+        {
+          "name": "Create Razorpay Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donationId\": \"{{donationId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donations/create-order"
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donationId\": \"{{donationId}}\",\n  \"razorpay_order_id\": \"order_test_{{donationId}}\",\n  \"razorpay_payment_id\": \"pay_test_123\",\n  \"razorpay_signature\": \"mock\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donations/verify"
+          }
+        },
+        {
+          "name": "Get Donation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/donations/{{donationId}}"
+          }
+        },
+        {
+          "name": "Confirm Bank/Offline (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/api/donations/{{donationId}}/confirm"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Membership",
+      "item": [
+        {
+          "name": "Submit Application",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.application && data.application._id) pm.collectionVariables.set('applicationId', data.application._id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "fullName", "value": "Md. Aftab Alam", "type": "text" },
+                { "key": "fatherName", "value": "Abdul Alam", "type": "text" },
+                { "key": "mobile", "value": "9876543210", "type": "text" },
+                { "key": "email", "value": "member@example.com", "type": "text" },
+                { "key": "address", "value": "Bathiya, Manigachhi", "type": "text" },
+                { "key": "state", "value": "Bihar", "type": "text" },
+                { "key": "district", "value": "Darbhanga", "type": "text" },
+                { "key": "pincode", "value": "847423", "type": "text" },
+                { "key": "category", "value": "Blue", "type": "text" },
+                { "key": "membershipPeriod", "value": "1", "type": "text" },
+                { "key": "paymentDate", "value": "2026-07-30", "type": "text" },
+                { "key": "consentDisplay", "value": "true", "type": "text" },
+                { "key": "paymentMode", "value": "UPI", "type": "text" },
+                { "key": "photo", "type": "file", "src": [] },
+                { "key": "idProof", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/membership/applications"
+          }
+        },
+        {
+          "name": "Create Membership Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{baseUrl}}/api/membership/applications/{{applicationId}}/create-order"
+          }
+        },
+        {
+          "name": "Verify Membership Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_mem_test_{{applicationId}}\",\n  \"razorpay_payment_id\": \"pay_mem_test_123\",\n  \"transactionId\": \"UTR123456\"\n}"
+            },
+            "url": "{{baseUrl}}/api/membership/applications/{{applicationId}}/verify"
+          }
+        },
+        {
+          "name": "Lookup Member (send OTP)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"{{memberId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/membership/lookup"
+          }
+        },
+        {
+          "name": "Verify Lookup OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"otp\": \"1234\"\n}"
+            },
+            "url": "{{baseUrl}}/api/membership/lookup/verify"
+          }
+        },
+        {
+          "name": "Renew Preview",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"membershipPeriod\": 1,\n  \"otp\": \"1234\"\n}"
+            },
+            "url": "{{baseUrl}}/api/membership/renew"
+          }
+        },
+        {
+          "name": "Renew Confirm",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{memberId}}\",\n  \"membershipPeriod\": 1,\n  \"transactionId\": \"UTR987654\"\n}"
+            },
+            "url": "{{baseUrl}}/api/membership/renew/confirm"
+          }
+        },
+        {
+          "name": "List Members (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/membership"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Communication",
+      "item": [
+        {
+          "name": "Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Ishaan\",\n  \"lastName\": \"Kumar\",\n  \"email\": \"ishaan@example.com\",\n  \"phone\": \"9876543210\",\n  \"address\": \"Patna\",\n  \"zip\": \"800001\",\n  \"subject\": \"Partnership enquiry\",\n  \"message\": \"I would like to know more about volunteering opportunities.\",\n  \"privacy\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/contact"
+          }
+        },
+        {
+          "name": "Quick Message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Visitor\",\n  \"email\": \"visitor@example.com\",\n  \"message\": \"Hello IWF team\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/messages"
+          }
+        },
+        {
+          "name": "Newsletter Subscribe",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"subscriber@example.com\",\n  \"source\": \"footer\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/newsletter"
+          }
+        },
+        {
+          "name": "Role Application — Volunteer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Asha\",\n  \"lastName\": \"Devi\",\n  \"age\": 28,\n  \"gender\": \"Female\",\n  \"address\": \"Darbhanga\",\n  \"city\": \"Darbhanga\",\n  \"state\": \"Bihar\",\n  \"pinCode\": \"846004\",\n  \"email\": \"asha@example.com\",\n  \"contactNumber\": \"9876543210\",\n  \"qualification\": \"Graduate\",\n  \"message\": \"Want to help in health camps\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/roles/volunteer"
+          }
+        },
+        {
+          "name": "Role Application — Partner",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationName\": \"Hope NGO\",\n  \"organizationType\": \"NGO\",\n  \"contactPerson\": \"Rajesh\",\n  \"designation\": \"Director\",\n  \"email\": \"hope@example.com\",\n  \"mobile\": \"9876543210\",\n  \"address\": \"Patna\",\n  \"proposal\": \"Joint education programme in rural Bihar\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/roles/partner"
+          }
+        },
+        {
+          "name": "Role Application — Sponsor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sponsorName\": \"ABC Corp\",\n  \"sponsorCategory\": \"Corporate\",\n  \"contactPerson\": \"Priya\",\n  \"programme\": \"Education\",\n  \"email\": \"csr@abc.com\",\n  \"mobile\": \"9876543210\",\n  \"details\": \"Willing to sponsor 50 scholarships\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/roles/sponsor"
+          }
+        },
+        {
+          "name": "Role Application — Mentor",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Dr. Meena\",\n  \"profession\": \"Doctor\",\n  \"expertise\": \"Community Health\",\n  \"mode\": \"Online\",\n  \"email\": \"meena@example.com\",\n  \"contactNumber\": \"9876543210\",\n  \"bio\": \"10 years rural health experience\"\n}"
+            },
+            "url": "{{baseUrl}}/api/contact/roles/mentor"
+          }
+        },
+        {
+          "name": "Role Application — Employee (with resume)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "postAppliedFor", "value": "Field Coordinator", "type": "text" },
+                { "key": "fullName", "value": "Vikram Singh", "type": "text" },
+                { "key": "mobile", "value": "9876543210", "type": "text" },
+                { "key": "email", "value": "vikram@example.com", "type": "text" },
+                { "key": "qualification", "value": "MSW", "type": "text" },
+                { "key": "experience", "value": "3 years", "type": "text" },
+                { "key": "confirmDetails", "value": "true", "type": "text" },
+                { "key": "resume", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/contact/roles/employee"
+          }
+        },
+        {
+          "name": "Inbox (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/api/contact/inbox"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CMS Public",
+      "item": [
+        {
+          "name": "Site Settings",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/settings" }
+        },
+        {
+          "name": "Impact Stats",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/stats" }
+        },
+        {
+          "name": "Notices",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/notices" }
+        },
+        {
+          "name": "News",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/news" }
+        },
+        {
+          "name": "Gallery",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/gallery" }
+        },
+        {
+          "name": "Hero Slides",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/heroes" }
+        },
+        {
+          "name": "People",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/people" }
+        },
+        {
+          "name": "Financial Types",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/financial-types" }
+        },
+        {
+          "name": "Membership Categories (Blue/Yellow/Green cards)",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/membership-categories" }
+        },
+        {
+          "name": "Donor Tiers (Silver/Gold/Platinum cards)",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/donor-tiers" }
+        },
+        {
+          "name": "Programs List",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/programs" }
+        },
+        {
+          "name": "Program by Slug",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/programs/education" }
+        },
+        {
+          "name": "Patients List",
+          "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/cms/patients" }
+        },
+        {
+          "name": "Patients Urgent",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/cms/patients?urgent=1"
+          }
+        },
+        {
+          "name": "Patient bySlug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/cms/patients/{{patientSlug}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CMS Admin",
+      "item": [
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 99344 94248\",\n  \"email\": \"info@islahwelfarefoundation.org\",\n  \"address\": \"Bathiya, Manigachhi, Darbhanga, Bihar\",\n  \"upiId\": \"iwfindia@ubgb\"\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/settings"
+          }
+        },
+        {
+          "name": "Create Notice",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"New health camp this weekend\",\n  \"href\": \"/news-and-events\",\n  \"type\": \"ticker\",\n  \"sortOrder\": 10,\n  \"published\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/notices"
+          }
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tag\": \"Update\",\n  \"tagColor\": \"#15803d\",\n  \"date\": \"July 30, 2026\",\n  \"title\": \"CMS news item\",\n  \"excerpt\": \"Created via Postman for frontend integration testing.\",\n  \"image\": \"📰\",\n  \"featured\": false,\n  \"readTime\": \"1 min\",\n  \"published\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/news"
+          }
+        },
+        {
+          "name": "Create Gallery Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"FIELD VISIT\",\n  \"image\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n  \"type\": \"photo\",\n  \"sortOrder\": 10,\n  \"published\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/gallery"
+          }
+        },
+        {
+          "name": "Create Impact Stat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"donors\",\n  \"value\": 1200,\n  \"suffix\": \"+\",\n  \"label\": \"Donors\",\n  \"icon\": \"Users\",\n  \"color\": \"#15803d\",\n  \"sortOrder\": 7,\n  \"published\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/stats"
+          }
+        },
+        {
+          "name": "Create Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"demo-patient\",\n  \"name\": \"Demo Patient\",\n  \"age\": 40,\n  \"gender\": \"Male\",\n  \"disease\": \"Demo Condition\",\n  \"hospital\": \"Demo Hospital\",\n  \"admissionDate\": \"2026-07-01\",\n  \"condition\": \"Serious\",\n  \"urgent\": true,\n  \"image\": \"https://res.cloudinary.com/demo/image/upload/sample.jpg\",\n  \"neededAmount\": 50000,\n  \"raisedAmount\": 5000,\n  \"donorsCount\": 5,\n  \"costBreakdown\": [{ \"label\": \"Treatment\", \"amount\": 50000 }],\n  \"verificationId\": \"IWF-CLS-DEMO-001\",\n  \"verifiedBy\": \"IWF Team\",\n  \"verificationDate\": \"2026-07-02\",\n  \"documents\": [],\n  \"story\": [\"Demo story paragraph.\"],\n  \"updates\": [],\n  \"donationHistory\": [],\n  \"published\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/cms/patients"
+          }
+        },
+        {
+          "name": "Upload Media (Cloudinary)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "folder", "value": "cms", "type": "text" },
+                { "key": "file", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{baseUrl}}/api/cms/upload"
+          }
+        }
+      ]
+    }
+  ]
+}
