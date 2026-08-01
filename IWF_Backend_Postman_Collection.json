@@ -1,0 +1,323 @@
+{
+  "info": {
+    "name": "IWF Backend APIs (Final)",
+    "description": "Complete and final API Collection for Islah Welfare Foundation, including Payments, CMS, and Communications.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Communication Service",
+      "item": [
+        {
+          "name": "Submit Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/contact",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"John Doe\",\"email\":\"john@example.com\",\"subject\":\"Help\",\"message\":\"Need details.\"}"
+            }
+          }
+        },
+        {
+          "name": "Subscribe Newsletter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/contact/subscribe",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "contact",
+                "subscribe"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"john@example.com\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment & Donation Service",
+      "item": [
+        {
+          "name": "Initialize Donation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/donations/init",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "init"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amount\":500,\"donorType\":\"individual\",\"citizenship\":\"indian\",\"fullName\":\"John\",\"email\":\"j@j.com\",\"phone\":\"999999999\",\"address\":\"Delhi\",\"financialType\":\"Education\",\"taxExemption\":true,\"pan\":\"ABCDE1234F\"}"
+            }
+          }
+        },
+        {
+          "name": "Verify Donation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/donations/verify",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"razorpay_order_id\":\"order_xx\",\"razorpay_payment_id\":\"pay_xx\",\"razorpay_signature\":\"sig_xx\",\"transactionId\":\"mongo_id\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CMS Service (Protected)",
+      "item": [
+        {
+          "name": "Get News",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/cms/news",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "news"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/news",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "news"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"tag\":\"Health\",\"title\":\"Free Checkup\",\"excerpt\":\"Details\",\"published\":true}"
+            }
+          }
+        },
+        {
+          "name": "Get Patients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/cms/patients",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "patients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/patients",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "patients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Rahim\",\"disease\":\"Cancer\",\"hospital\":\"AIIMS\",\"neededAmount\":500000,\"urgent\":true}"
+            }
+          }
+        },
+        {
+          "name": "Get Notices (Ticker)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/cms/notices",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "notices"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Notice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/notices",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "notices"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\":\"Urgent Notice!\",\"type\":\"ticker\",\"published\":true}"
+            }
+          }
+        },
+        {
+          "name": "Get Settings (Impact Stats)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/cms/settings",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/settings",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"impactStats\":[{\"key\":\"lives\",\"value\":1500000,\"label\":\"Lives Touched\"}]}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
