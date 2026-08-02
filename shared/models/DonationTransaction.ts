@@ -49,6 +49,7 @@ export interface IDonationTransaction extends Document {
   donorCardTier: "Platinum" | "Gold" | "Silver";
   formSnapshot: IDonationFormSnapshot;
   paymentDetails?: IPaymentDetails;
+  referralCode?: string;
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
   razorpaySignature?: string;
@@ -107,6 +108,7 @@ const DonationTransactionSchema = new Schema<IDonationTransaction>(
     },
     formSnapshot: { type: FormSnapshotSchema, required: true },
     paymentDetails: { type: PaymentDetailsSchema },
+    referralCode: { type: String, required: false, uppercase: true, index: true },
     razorpayOrderId: { type: String, required: false },
     razorpayPaymentId: { type: String, required: false },
     razorpaySignature: { type: String, required: false },

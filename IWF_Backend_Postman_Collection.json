@@ -1,374 +1,60 @@
 {
   "info": {
-    "name": "IWF Backend APIs (Final)",
-    "description": "Complete and final API Collection for Islah Welfare Foundation, including Payments, CMS, and Communications.",
+    "name": "IWF Backend APIs",
+    "description": "Postman collection for Islah Welfare Foundation backend APIs. Backend returns JSON/status codes only; frontend renders all cards, receipts, certificates, and page UI.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
   },
   "item": [
     {
-      "name": "Communication Service",
+      "name": "System",
       "item": [
         {
-          "name": "Submit Contact Form",
+          "name": "Health Check",
           "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/contact",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "contact"
-              ]
+            "auth": {
+              "type": "noauth"
             },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"name\":\"John Doe\",\"email\":\"john@example.com\",\"subject\":\"Help\",\"message\":\"Need details.\"}"
-            }
-          }
-        },
-        {
-          "name": "Subscribe Newsletter",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/contact/subscribe",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "contact",
-                "subscribe"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"email\":\"john@example.com\"}"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Payment & Donation Service",
-      "item": [
-        {
-          "name": "Initialize Donation",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/donations/init",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "donations",
-                "init"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"amount\":500,\"donorType\":\"individual\",\"citizenship\":\"indian\",\"fullName\":\"John\",\"email\":\"j@j.com\",\"phone\":\"999999999\",\"address\":\"Delhi\",\"financialType\":\"Education\",\"taxExemption\":true,\"pan\":\"ABCDE1234F\"}"
-            }
-          }
-        },
-        {
-          "name": "Verify Donation",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/donations/verify",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "donations",
-                "verify"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"razorpay_order_id\":\"order_xx\",\"razorpay_payment_id\":\"pay_xx\",\"razorpay_signature\":\"sig_xx\",\"transactionId\":\"mongo_id\"}"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "CMS Service (Protected)",
-      "item": [
-        {
-          "name": "Get News",
-          "request": {
             "method": "GET",
+            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/cms/news",
+              "raw": "{{baseUrl}}/api/health",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "cms",
-                "news"
+                "health"
               ]
             }
           }
         },
         {
-          "name": "Create News",
+          "name": "API Docs",
           "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/news",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "news"
-              ]
+            "auth": {
+              "type": "noauth"
             },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"tag\":\"Health\",\"title\":\"Free Checkup\",\"excerpt\":\"Details\",\"published\":true}"
-            }
-          }
-        },
-        {
-          "name": "Get Patients",
-          "request": {
             "method": "GET",
+            "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/cms/patients",
+              "raw": "{{baseUrl}}/api/docs",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "cms",
-                "patients"
+                "docs"
               ]
-            }
-          }
-        },
-        {
-          "name": "Create Patient",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/patients",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "patients"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"name\":\"Rahim\",\"disease\":\"Cancer\",\"hospital\":\"AIIMS\",\"neededAmount\":500000,\"urgent\":true}"
-            }
-          }
-        },
-        {
-          "name": "Get Notices (Ticker)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/notices",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "notices"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Create Notice",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/notices",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "notices"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"text\":\"Urgent Notice!\",\"type\":\"ticker\",\"published\":true}"
-            }
-          }
-        },
-        {
-          "name": "Get Settings (Impact Stats)",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/settings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "settings"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update Settings",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/settings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "settings"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"impactStats\":[{\"key\":\"lives\",\"value\":1500000,\"label\":\"Lives Touched\"}]}"
-            }
-          }
-        },
-        {
-          "name": "Get Donor Tiers",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/donor-tiers",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "donor-tiers"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Update Donor Tier",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cms/donor-tiers/MONGO_ID",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cms",
-                "donor-tiers",
-                "MONGO_ID"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\"name\":\"Platinum Plus\",\"minAmount\":100000,\"features\":[\"VIP\"],\"color\":\"#E5E4E2\"}"
             }
           }
         }
@@ -378,8 +64,23 @@
       "name": "Auth Service",
       "item": [
         {
-          "name": "Admin Login",
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) pm.collectionVariables.set('authToken', json.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
               {
@@ -400,20 +101,15 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"email\":\"admin@example.com\",\"password\":\"password123\"}"
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
             }
           }
         },
         {
-          "name": "Get Current Admin",
+          "name": "Get Me",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer YOUR_ADMIN_TOKEN"
-              }
-            ],
+            "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/auth/me",
               "host": [
@@ -430,26 +126,334 @@
       ]
     },
     {
-      "name": "Membership Service",
+      "name": "Communication Service",
       "item": [
         {
-          "name": "Get Members",
+          "name": "Submit Contact Form",
           "request": {
-            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{baseUrl}}/api/membership",
+              "raw": "{{baseUrl}}/api/contact",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "membership"
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"9999999999\",\n  \"subject\": \"Help\",\n  \"message\": \"Need details.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Subscribe Newsletter",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contact/subscribe",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contact",
+                "subscribe"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Donation Service",
+      "item": [
+        {
+          "name": "Initialize Donation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.transactionId) pm.collectionVariables.set('transactionId', json.transactionId);",
+                  "if (json.orderId) pm.collectionVariables.set('razorpayOrderId', json.orderId);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/init",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "init"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500,\n  \"donorType\": \"individual\",\n  \"citizenship\": \"indian\",\n  \"fullName\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"9999999999\",\n  \"address\": \"Delhi\",\n  \"financialType\": \"Education\",\n  \"paymentMode\": \"online\",\n  \"taxExemption\": true,\n  \"consentDisplay\": true,\n  \"pan\": \"ABCDE1234F\",\n  \"patientSlug\": \"sample-patient\",\n  \"referralCode\": \"IWFREF001\",\n  \"paymentDetails\": {\n    \"channel\": \"upi\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify Donation",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"{{razorpayOrderId}}\",\n  \"razorpay_payment_id\": \"pay_xx\",\n  \"razorpay_signature\": \"sig_xx\",\n  \"transactionId\": \"{{transactionId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Donors",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/donors",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "donors"
               ]
             }
           }
         },
         {
-          "name": "Apply for Role",
+          "name": "Get Receipt By Receipt No",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/receipt?receiptNo={{receiptNo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "receipt"
+              ],
+              "query": [
+                {
+                  "key": "receiptNo",
+                  "value": "{{receiptNo}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Receipt By Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/receipt?email=john@example.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "receipt"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "john@example.com"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Donor Card Data",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/{{transactionId}}/donor-card",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "{{transactionId}}",
+                "donor-card"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get 80G Certificate Data",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/donations/{{transactionId}}/80g-certificate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "donations",
+                "{{transactionId}}",
+                "80g-certificate"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Membership Service",
+      "item": [
+        {
+          "name": "Get Active Members",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "members"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apply For Membership",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data?._id) pm.collectionVariables.set('membershipApplicationId', json.data._id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/apply-role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "apply-role"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"fatherName\": \"Richard Doe\",\n  \"mobile\": \"9876543210\",\n  \"email\": \"jane@example.com\",\n  \"address\": \"Mumbai\",\n  \"state\": \"MH\",\n  \"district\": \"Mumbai\",\n  \"pincode\": \"400001\",\n  \"category\": \"Blue\",\n  \"membershipPeriod\": 1,\n  \"paymentMode\": \"online\",\n  \"amount\": 500,\n  \"convenienceFee\": 50,\n  \"consentDisplay\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Issue Member From Application",
           "request": {
             "method": "POST",
             "header": [
@@ -459,19 +463,577 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/membership/applyRole",
+              "raw": "{{baseUrl}}/api/membership/applications/{{membershipApplicationId}}/issue",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "membership",
-                "applyRole"
+                "applications",
+                "{{membershipApplicationId}}",
+                "issue"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Request OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/otp/request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "otp",
+                "request"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\"fullName\":\"Jane Doe\",\"mobile\":\"9876543210\",\"email\":\"jane@example.com\",\"address\":\"Mumbai\",\"state\":\"MH\",\"district\":\"Mumbai\",\"pincode\":\"400001\",\"category\":\"Blue\",\"membershipPeriod\":1,\"paymentMode\":\"online\",\"amount\":100}"
+              "raw": "{\n  \"identifier\": \"jane@example.com\",\n  \"purpose\": \"lookup\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/otp/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "otp",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"jane@example.com\",\n  \"purpose\": \"lookup\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get OTP-Gated Status",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/status?identifier=jane@example.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "identifier",
+                  "value": "jane@example.com"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Renew Membership",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/renew",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "renew"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifier\": \"jane@example.com\",\n  \"membershipPeriod\": 1,\n  \"paymentMode\": \"upi\",\n  \"amount\": 500,\n  \"paymentDetails\": {\n    \"transactionId\": \"upi_txn_001\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Membership Card Data",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/card/{{memberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "card",
+                "{{memberId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Membership Fee Receipt Data",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/fee-receipt/{{memberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "fee-receipt",
+                "{{memberId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Referral Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/{{memberId}}/referrals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "{{memberId}}",
+                "referrals"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"IWFREF001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Referral Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/membership/{{memberId}}/referrals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "{{memberId}}",
+                "referrals"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "CMS Service",
+      "item": [
+        {
+          "name": "Get News",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/news",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "news"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/news",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "news"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tag\": \"Health\",\n  \"date\": \"2026-08-02\",\n  \"title\": \"Free Checkup\",\n  \"excerpt\": \"Details\",\n  \"published\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Generic CMS Resource",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/{{cmsResource}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "{{cmsResource}}"
+              ]
+            },
+            "description": "cmsResource examples: gallery, hero-slides, people, programs, financial-types, membership-categories, events, causes, publications, press-releases, newsletters"
+          }
+        },
+        {
+          "name": "Get Generic CMS Item",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/{{cmsResource}}/{{cmsItemIdOrSlug}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "{{cmsResource}}",
+                "{{cmsItemIdOrSlug}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Generic CMS Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/{{cmsResource}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "{{cmsResource}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"sample-item\",\n  \"title\": \"Sample Item\",\n  \"excerpt\": \"Short summary\",\n  \"body\": \"Body text\",\n  \"image\": \"https://example.com/image.jpg\",\n  \"published\": true,\n  \"sortOrder\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Generic CMS Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/{{cmsResource}}/{{cmsItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "{{cmsResource}}",
+                "{{cmsItemId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Item\",\n  \"published\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Generic CMS Item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/{{cmsResource}}/{{cmsItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "{{cmsResource}}",
+                "{{cmsItemId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Patients",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/patients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "patients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notices",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/notices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "notices"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Settings",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"impactStats\": [\n    {\n      \"key\": \"lives\",\n      \"value\": 1500000,\n      \"suffix\": \"+\",\n      \"label\": \"Lives Touched\"\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Donor Tiers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cms/donor-tiers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "donor-tiers"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Panels",
+      "item": [
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/panels/admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "panels",
+                "admin"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Coordinator Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/panels/coordinator?district=Mumbai",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "panels",
+                "coordinator"
+              ],
+              "query": [
+                {
+                  "key": "district",
+                  "value": "Mumbai"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Member Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/panels/member?identifier=jane@example.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "panels",
+                "member"
+              ],
+              "query": [
+                {
+                  "key": "identifier",
+                  "value": "jane@example.com"
+                }
+              ]
             }
           }
         }
@@ -482,6 +1044,51 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "YOUR_AUTH_TOKEN",
+      "type": "string"
+    },
+    {
+      "key": "transactionId",
+      "value": "DONATION_TRANSACTION_ID",
+      "type": "string"
+    },
+    {
+      "key": "razorpayOrderId",
+      "value": "RAZORPAY_ORDER_ID",
+      "type": "string"
+    },
+    {
+      "key": "receiptNo",
+      "value": "IWF-20260802-123456",
+      "type": "string"
+    },
+    {
+      "key": "memberId",
+      "value": "IWF-BLU-2026-001",
+      "type": "string"
+    },
+    {
+      "key": "membershipApplicationId",
+      "value": "MEMBERSHIP_APPLICATION_ID",
+      "type": "string"
+    },
+    {
+      "key": "cmsResource",
+      "value": "gallery",
+      "type": "string"
+    },
+    {
+      "key": "cmsItemId",
+      "value": "CMS_ITEM_ID",
+      "type": "string"
+    },
+    {
+      "key": "cmsItemIdOrSlug",
+      "value": "sample-item",
       "type": "string"
     }
   ]
