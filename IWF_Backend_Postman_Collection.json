@@ -19,9 +19,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/contact",
+              "raw": "{{baseUrl}}/api/contact",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -45,9 +45,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/contact/subscribe",
+              "raw": "{{baseUrl}}/api/contact/subscribe",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -77,9 +77,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/donations/init",
+              "raw": "{{baseUrl}}/api/donations/init",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -104,9 +104,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/donations/verify",
+              "raw": "{{baseUrl}}/api/donations/verify",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -130,9 +130,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:5000/api/cms/news",
+              "raw": "{{baseUrl}}/api/cms/news",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -157,9 +157,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/news",
+              "raw": "{{baseUrl}}/api/cms/news",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -178,9 +178,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:5000/api/cms/patients",
+              "raw": "{{baseUrl}}/api/cms/patients",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -205,9 +205,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/patients",
+              "raw": "{{baseUrl}}/api/cms/patients",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -226,9 +226,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:5000/api/cms/notices",
+              "raw": "{{baseUrl}}/api/cms/notices",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -253,9 +253,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/notices",
+              "raw": "{{baseUrl}}/api/cms/notices",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -274,9 +274,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:5000/api/cms/settings",
+              "raw": "{{baseUrl}}/api/cms/settings",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -301,9 +301,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/settings",
+              "raw": "{{baseUrl}}/api/cms/settings",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -328,9 +328,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/donor-tiers",
+              "raw": "{{baseUrl}}/api/cms/donor-tiers",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -355,9 +355,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/cms/donor-tiers/MONGO_ID",
+              "raw": "{{baseUrl}}/api/cms/donor-tiers/MONGO_ID",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -388,9 +388,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/auth/login",
+              "raw": "{{baseUrl}}/api/auth/login",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -415,9 +415,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/auth/me",
+              "raw": "{{baseUrl}}/api/auth/me",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -437,9 +437,9 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:5000/api/membership",
+              "raw": "{{baseUrl}}/api/membership",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -459,9 +459,9 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:5000/api/membership/applyRole",
+              "raw": "{{baseUrl}}/api/membership/applyRole",
               "host": [
-                "http://localhost:5000"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -476,6 +476,13 @@
           }
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
     }
   ]
 }
