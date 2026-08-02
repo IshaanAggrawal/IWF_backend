@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { NewsArticle } from "../../../../shared/models/CmsContent";
+import { NewsArticle } from "@shared/models/CmsContent";
 
 export const getNews = async (req: Request, res: Response) => {
   try {

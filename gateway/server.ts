@@ -3,13 +3,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import path from "path";
-import { connectDB } from "../../shared/config/db";
-import { errorHandler } from "../../shared/middlewares/errorHandler";
-import authRoutes from "../../services/auth/src/routes";
-import paymentRoutes from "../../services/payment/src/routes";
-import membershipRoutes from "../../services/membership/src/routes";
-import communicationRoutes from "../../services/communication/src/routes";
-import cmsRoutes from "../../services/cms/src/routes";
+import { connectDB } from "@shared/config/db";
+import { errorHandler } from "@shared/middlewares/errorHandler";
+import authRoutes from "@services/auth/src/routes";
+import paymentRoutes from "@services/payment/src/routes";
+import membershipRoutes from "@services/membership/src/routes";
+import communicationRoutes from "@services/communication/src/routes";
+import cmsRoutes from "@services/cms/src/routes";
 
 dotenv.config();
 

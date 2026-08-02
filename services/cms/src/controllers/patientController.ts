@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PatientCampaign } from "../../../../shared/models/PatientCampaign";
+import { PatientCampaign } from "@shared/models/PatientCampaign";
 
 export const getPatients = async (req: Request, res: Response) => {
   try {

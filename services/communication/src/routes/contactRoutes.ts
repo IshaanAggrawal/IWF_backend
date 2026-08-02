@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { submitContactForm, subscribeNewsletter } from "../controllers/contactController";
-import { strictLimiter, globalLimiter } from "../../../../shared/middlewares/rateLimiter";
+import { strictLimiter, globalLimiter } from "@shared/middlewares/rateLimiter";
 
 const router = Router();
 

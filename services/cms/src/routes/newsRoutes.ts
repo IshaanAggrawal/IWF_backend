@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getNews, createNews } from "../controllers/newsController";
-import { requireAdmin } from "../../../../shared/middlewares/authMiddleware";
+import { requireAdmin } from "@shared/middlewares/auth";
 
 const router = Router();
 

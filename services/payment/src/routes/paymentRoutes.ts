@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { initializeDonation, verifyDonation, getDonors } from "../controllers/paymentController";
-import { strictLimiter } from "../../../../shared/middlewares/rateLimiter";
+import { strictLimiter } from "@shared/middlewares/rateLimiter";
 
 const router = Router();
 

@@ -38,3 +38,34 @@ export const sendReceiptEmail = async (to: string, receiptNo: string, amount: nu
     return false;
   }
 };
+
+export const sendContactFormNotification = async (contactDetails: any) => {
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@iwfindia.org";
+    const mailOptions = {
+      from: process.env.SMTP_FROM || '"Islah Welfare Foundation" <no-reply@iwfindia.org>',
+      to: adminEmail,
+      subject: `New Contact Form Submission: ${contactDetails.subject}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: #15582f;">New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${contactDetails.firstName} ${contactDetails.lastName}</p>
+          <p><strong>Email:</strong> ${contactDetails.email}</p>
+          <p><strong>Phone:</strong> ${contactDetails.phone}</p>
+          <p><strong>Subject:</strong> ${contactDetails.subject}</p>
+          <p><strong>Message:</strong></p>
+          <blockquote style="border-left: 4px solid #15582f; padding-left: 10px; margin-left: 0;">
+            ${contactDetails.message.replace(/\n/g, "<br/>")}
+          </blockquote>
+        </div>
+      `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Contact form notification sent: %s", info.messageId);
+    return true;
+  } catch (error) {
+    console.error("Error sending contact notification:", error);
+    return false;
+  }
+};

@@ -8,6 +8,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: AuthUser;
+      admin?: any;
     }
   }
 }
@@ -32,4 +33,22 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction) {
 export function signToken(user: AuthUser): string {
   const secret = process.env.JWT_SECRET || "super_secret_jwt_key_change_in_prod";
   return jwt.sign(user, secret, { expiresIn: "7d" });
+}
+
+export function requireAdmin(req: Request, _res: Response, next: NextFunction) {
+  const header = req.headers.authorization;
+  if (!header?.startsWith("Bearer ")) {
+    return next(new AppError("Access denied. No token provided.", 401));
+  }
+
+  const token = header.slice(7);
+  try {
+    const secret = process.env.JWT_SECRET || "super_secret_jwt_key_change_in_prod";
+    const payload = jwt.verify(token, secret);
+    req.admin = payload;
+    next();
+  } catch (error) {
+    console.error("JWT Verification failed:", error);
+    next(new AppError("Invalid or expired token.", 401));
+  }
 }

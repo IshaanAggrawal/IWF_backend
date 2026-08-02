@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { ContactMessage } from "../../../../shared/models/Communication";
-import { Subscriber } from "../../../../shared/models/Subscriber";
+import { ContactMessage } from "@shared/models/Communication";
+import { Subscriber } from "@shared/models/Subscriber";
+import { sendContactFormNotification } from "../services/emailService";
 
 export const submitContactForm = async (req: Request, res: Response) => {
   try {
@@ -19,7 +20,8 @@ export const submitContactForm = async (req: Request, res: Response) => {
       message,
     });
 
-    // TODO: Trigger Email via Resend/AWS SES to Admin Team here
+    // Trigger Email via Resend/AWS SES to Admin Team here
+    await sendContactFormNotification(newMessage);
 
     res.status(201).json({
       success: true,
