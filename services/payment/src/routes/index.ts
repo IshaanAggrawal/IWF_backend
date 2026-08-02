@@ -1,8 +1,8 @@
 import { Router } from "express";
-import contactRoutes from "./routes/contactRoutes";
+import paymentRoutes from "./paymentRoutes";
 
 const router = Router();
 
-router.use("/", contactRoutes);
+router.use("/", paymentRoutes);
 
 export default router;

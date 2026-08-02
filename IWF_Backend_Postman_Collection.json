@@ -316,6 +316,164 @@
               "raw": "{\"impactStats\":[{\"key\":\"lives\",\"value\":1500000,\"label\":\"Lives Touched\"}]}"
             }
           }
+        },
+        {
+          "name": "Get Donor Tiers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/donor-tiers",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "donor-tiers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Donor Tier",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/cms/donor-tiers/MONGO_ID",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "cms",
+                "donor-tiers",
+                "MONGO_ID"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Platinum Plus\",\"minAmount\":100000,\"features\":[\"VIP\"],\"color\":\"#E5E4E2\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth Service",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"admin@example.com\",\"password\":\"password123\"}"
+            }
+          }
+        },
+        {
+          "name": "Get Current Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/me",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Membership Service",
+      "item": [
+        {
+          "name": "Get Members",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/membership",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "membership"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apply for Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/membership/applyRole",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "api",
+                "membership",
+                "applyRole"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fullName\":\"Jane Doe\",\"mobile\":\"9876543210\",\"email\":\"jane@example.com\",\"address\":\"Mumbai\",\"state\":\"MH\",\"district\":\"Mumbai\",\"pincode\":\"400001\",\"category\":\"Blue\",\"membershipPeriod\":1,\"paymentMode\":\"online\",\"amount\":100}"
+            }
+          }
         }
       ]
     }

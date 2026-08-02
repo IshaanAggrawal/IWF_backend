@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { AdminUser } from "../../../../shared/models/AdminUser";
-import { asyncHandler } from "../../../../shared/utils/asyncHandler";
-import { AppError } from "../../../../shared/utils/AppError";
-import { signToken } from "../../../../shared/middlewares/auth";
+import { AdminUser } from "@shared/models/AdminUser";
+import { asyncHandler } from "@shared/utils/asyncHandler";
+import { AppError } from "@shared/utils/AppError";
+import { signToken } from "@shared/middlewares/auth";
 
 const loginSchema = z.object({
   email: z.string().email(),

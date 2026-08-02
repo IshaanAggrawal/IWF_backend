@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ImpactStat } from "../../../../shared/models/CmsContent";
+import { ImpactStat } from "@shared/models/CmsContent";
 
 export const getSettings = async (req: Request, res: Response) => {
   try {

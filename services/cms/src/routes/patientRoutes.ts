@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getPatients, createPatient, addPatientUpdate } from "../controllers/patientController";
-import { requireAdmin } from "../../../../shared/middlewares/authMiddleware";
+import { requireAdmin } from "@shared/middlewares/auth";
 
 const router = Router();
 
