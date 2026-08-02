@@ -10,7 +10,6 @@ RUN npm ci
 # Copy source code and build
 COPY tsconfig.json ./
 COPY gateway/ gateway/
-COPY infrastructure/ infrastructure/
 COPY scripts/ scripts/
 COPY services/ services/
 COPY shared/ shared/

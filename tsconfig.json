@@ -17,8 +17,7 @@
   "include": [
     "gateway/**/*",
     "services/**/*",
-    "shared/**/*",
-    "infrastructure/**/*"
+    "shared/**/*"
   ],
   "exclude": ["node_modules", "dist"]
 }
