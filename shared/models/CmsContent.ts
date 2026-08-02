@@ -247,3 +247,47 @@ export const MembershipCategory = mongoose.model<IMembershipCategory>(
   "MembershipCategory",
   MembershipCategorySchema
 );
+
+export interface IContentEntry extends Document {
+  slug: string;
+  type: "event" | "cause" | "publication" | "press-release" | "newsletter";
+  title: string;
+  excerpt?: string;
+  body?: string;
+  image?: string;
+  fileUrl?: string;
+  date?: string;
+  startsAt?: Date;
+  endsAt?: Date;
+  metadata?: Record<string, unknown>;
+  sortOrder: number;
+  published: boolean;
+}
+
+const ContentEntrySchema = new Schema<IContentEntry>(
+  {
+    slug: { type: String, required: true },
+    type: {
+      type: String,
+      enum: ["event", "cause", "publication", "press-release", "newsletter"],
+      required: true,
+      index: true,
+    },
+    title: { type: String, required: true },
+    excerpt: String,
+    body: String,
+    image: String,
+    fileUrl: String,
+    date: String,
+    startsAt: Date,
+    endsAt: Date,
+    metadata: { type: Schema.Types.Mixed },
+    sortOrder: { type: Number, default: 0 },
+    published: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
+ContentEntrySchema.index({ type: 1, slug: 1 }, { unique: true });
+
+export const ContentEntry = mongoose.model<IContentEntry>("ContentEntry", ContentEntrySchema);

@@ -35,6 +35,18 @@ export function signToken(user: AuthUser): string {
   return jwt.sign(user, secret, { expiresIn: "7d" });
 }
 
+export function requireRole(...roles: string[]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    requireAuth(req, res, (error?: unknown) => {
+      if (error) return next(error);
+      if (!req.user || !roles.includes(req.user.role)) {
+        return next(new AppError("Insufficient permissions", 403));
+      }
+      next();
+    });
+  };
+}
+
 export function requireAdmin(req: Request, _res: Response, next: NextFunction) {
   const header = req.headers.authorization;
   if (!header?.startsWith("Bearer ")) {
@@ -45,7 +57,11 @@ export function requireAdmin(req: Request, _res: Response, next: NextFunction) {
   try {
     const secret = process.env.JWT_SECRET || "super_secret_jwt_key_change_in_prod";
     const payload = jwt.verify(token, secret);
-    req.admin = payload;
+    const typedPayload = payload as AuthUser;
+    if (typedPayload.role !== "admin") {
+      return next(new AppError("Admin access required.", 403));
+    }
+    req.admin = typedPayload;
     next();
   } catch (error) {
     console.error("JWT Verification failed:", error);

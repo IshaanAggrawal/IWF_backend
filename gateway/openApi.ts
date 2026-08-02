@@ -1,0 +1,33 @@
+export const openApiDocument = {
+  openapi: "3.0.0",
+  info: {
+    title: "Islah Welfare Foundation Backend API",
+    version: "1.0.0",
+  },
+  paths: {
+    "/api/auth/login": { post: { summary: "Admin/coordinator/member login" } },
+    "/api/auth/me": { get: { summary: "Current authenticated user" } },
+    "/api/donations/init": { post: { summary: "Initialize donation and payment order" } },
+    "/api/donations/verify": { post: { summary: "Verify Razorpay payment signature" } },
+    "/api/donations/donors": { get: { summary: "Top donors" } },
+    "/api/donations/receipt": { get: { summary: "Retrieve donation receipt by receipt number or email" } },
+    "/api/donations/{transactionId}/donor-card": { get: { summary: "Download donor recognition card" } },
+    "/api/donations/{transactionId}/80g-certificate": { get: { summary: "Download 80G certificate" } },
+    "/api/membership/apply-role": { post: { summary: "Submit membership application" } },
+    "/api/membership/otp/request": { post: { summary: "Request membership OTP" } },
+    "/api/membership/otp/verify": { post: { summary: "Verify membership OTP" } },
+    "/api/membership/status": { get: { summary: "OTP-gated membership status lookup" } },
+    "/api/membership/renew": { post: { summary: "OTP-gated membership renewal" } },
+    "/api/membership/card/{memberId}": { get: { summary: "Download membership card" } },
+    "/api/membership/fee-receipt/{memberId}": { get: { summary: "Download membership fee receipt" } },
+    "/api/membership/{memberId}/referrals": { get: { summary: "Referral report" }, post: { summary: "Create referral code" } },
+    "/api/panels/admin": { get: { summary: "Admin dashboard summary" } },
+    "/api/panels/coordinator": { get: { summary: "Coordinator scoped dashboard" } },
+    "/api/panels/member": { get: { summary: "Member dashboard" } },
+    "/api/cms/{resource}": {
+      get: { summary: "List CMS resource" },
+      post: { summary: "Create CMS resource item" },
+    },
+    "/api/cms/{resource}/{idOrSlug}": { get: { summary: "Get CMS item by id or slug" } },
+  },
+};

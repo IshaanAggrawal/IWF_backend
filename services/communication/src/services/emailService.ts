@@ -17,17 +17,14 @@ export const sendReceiptEmail = async (to: string, receiptNo: string, amount: nu
       from: process.env.SMTP_FROM || '"Islah Welfare Foundation" <no-reply@iwfindia.org>',
       to,
       subject: `Your Donation Receipt - ${receiptNo}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: #15582f;">Thank you for your generous donation!</h2>
-          <p>Dear Donor,</p>
-          <p>We have successfully received your donation of <strong>Rs. ${amount.toLocaleString("en-IN")}</strong>.</p>
-          <p>Your official receipt number is: <strong>${receiptNo}</strong></p>
-          <p>You can download your 80G Tax Exemption receipt directly from our website using your receipt number or email address.</p>
-          <br/>
-          <p>With gratitude,<br/>The IWF Team</p>
-        </div>
-      `,
+      text: [
+        "Thank you for your generous donation.",
+        `Amount received: Rs. ${amount.toLocaleString("en-IN")}`,
+        `Receipt number: ${receiptNo}`,
+        "You can retrieve your receipt from the website using your receipt number or email address.",
+        "With gratitude,",
+        "The IWF Team",
+      ].join("\n"),
     };
 
     const info = await transporter.sendMail(mailOptions);
@@ -39,6 +36,46 @@ export const sendReceiptEmail = async (to: string, receiptNo: string, amount: nu
   }
 };
 
+export const sendMembershipOtpEmail = async (to: string, otp: string, purpose: string) => {
+  try {
+    const mailOptions = {
+      from: process.env.SMTP_FROM || '"Islah Welfare Foundation" <no-reply@iwfindia.org>',
+      to,
+      subject: `Your IWF membership OTP`,
+      text: [`Your IWF membership OTP for ${purpose} is ${otp}.`, "This OTP is valid for 10 minutes."].join("\n"),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Membership OTP email sent: %s", info.messageId);
+    return true;
+  } catch (error) {
+    console.error("Error sending membership OTP:", error);
+    return false;
+  }
+};
+
+export const sendMembershipReminderEmail = async (to: string, name: string, validTill: string) => {
+  try {
+    const mailOptions = {
+      from: process.env.SMTP_FROM || '"Islah Welfare Foundation" <no-reply@iwfindia.org>',
+      to,
+      subject: "IWF membership renewal reminder",
+      text: [
+        `Dear ${name},`,
+        `Your IWF membership is valid till ${validTill}.`,
+        "Please renew your membership to keep your benefits active.",
+      ].join("\n"),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Membership reminder email sent: %s", info.messageId);
+    return true;
+  } catch (error) {
+    console.error("Error sending membership reminder:", error);
+    return false;
+  }
+};
+
 export const sendContactFormNotification = async (contactDetails: any) => {
   try {
     const adminEmail = process.env.ADMIN_EMAIL || "admin@iwfindia.org";
@@ -46,19 +83,15 @@ export const sendContactFormNotification = async (contactDetails: any) => {
       from: process.env.SMTP_FROM || '"Islah Welfare Foundation" <no-reply@iwfindia.org>',
       to: adminEmail,
       subject: `New Contact Form Submission: ${contactDetails.subject}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: #15582f;">New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${contactDetails.firstName} ${contactDetails.lastName}</p>
-          <p><strong>Email:</strong> ${contactDetails.email}</p>
-          <p><strong>Phone:</strong> ${contactDetails.phone}</p>
-          <p><strong>Subject:</strong> ${contactDetails.subject}</p>
-          <p><strong>Message:</strong></p>
-          <blockquote style="border-left: 4px solid #15582f; padding-left: 10px; margin-left: 0;">
-            ${contactDetails.message.replace(/\n/g, "<br/>")}
-          </blockquote>
-        </div>
-      `,
+      text: [
+        "New Contact Form Submission",
+        `Name: ${contactDetails.firstName} ${contactDetails.lastName}`,
+        `Email: ${contactDetails.email}`,
+        `Phone: ${contactDetails.phone}`,
+        `Subject: ${contactDetails.subject}`,
+        "Message:",
+        contactDetails.message,
+      ].join("\n"),
     };
 
     const info = await transporter.sendMail(mailOptions);
